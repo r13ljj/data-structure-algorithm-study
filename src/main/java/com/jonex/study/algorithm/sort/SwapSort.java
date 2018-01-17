@@ -1,4 +1,4 @@
-package com.jonex.study.algorithm;
+package com.jonex.study.algorithm.sort;
 
 /**
  * Created by xubai on 2018/01/16 下午7:26.
@@ -72,8 +72,33 @@ public class SwapSort {
         }
     }
 
+    /**
+     * 算法步骤：
+     * 1 从数列中挑出一个元素，称为 “基准”（pivot），
+     * 2 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作。
+     * 3 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
+     * 递归的最底部情形，是数列的大小是零或一，也就是永远都已经被排序好了。虽然一直递归下去，但是这个算法总会退出，因为在每次的迭代（iteration）中，它至少会把一个元素摆到它最后的位置去。
+     */
     void quickSort(int[] a, int low, int high){
-
+        if(low > high){
+            return;
+        }
+        int first = low;
+        int last = high;
+        int pivot = a[first];
+        while (first < last){
+            while(first < last && a[last] >= pivot){
+                --last;
+            }
+            a[first] = a[last];/*将比第一个小的移到低端*/
+            while(first < last && a[first] <= pivot){
+                ++first;
+            }
+            a[last] = a[first];/*将比第一个大的移到高端*/
+        }
+        a[first] = pivot;/*枢轴记录到原位*/
+        quickSort(a, low, first-1);
+        quickSort(a, first+1, high);
     }
 
 
@@ -81,7 +106,8 @@ public class SwapSort {
     public static void main(String[] args) {
         int[] a = {95, 45, 15, 78, 84, 51, 24, 12};
         SwapSort test = new SwapSort();
-        test.bubbleSort2(a);
+        //test.bubbleSort2(a);
+        test.quickSort(a, 0, 7);
         for(int i=0; i<a.length; i++){
             System.out.println(a[i]);
         }
